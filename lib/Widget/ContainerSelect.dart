@@ -14,7 +14,7 @@ class ContainerSelect extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("$secilen ÜNİVERSİTESİ",style: TextStyle(fontSize: 20,color: Colors.teal),), // KAYIT EKRANINDAN ALDIGIMIZ ÜNİVERSİTEYİ BURAYA YAZACAGIZ
+        Text("$secilen " ,style: TextStyle(fontSize: 20,color: Colors.teal),), // KAYIT EKRANINDAN ALDIGIMIZ ÜNİVERSİTEYİ BURAYA YAZACAGIZ
         Text(secilen1,style: TextStyle(fontSize: 20,color: Colors.teal),), // KAYIT EKRANINDAN ALDIGIMIZ BÖLÜMÜ BURAYA YAZACAGIZ
       ],
     );

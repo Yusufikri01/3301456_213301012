@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:hedefim/Ekranlar/DerslerAyt.dart';
-import 'package:hedefim/Ekranlar/DerslerTyt.dart';
+import 'package:hedefim/Ekranlar/OrtakDers.dart';
+
 
 
 class Dersler extends StatefulWidget {
@@ -11,43 +12,51 @@ class Dersler extends StatefulWidget {
 }
 
 class _DerslerState extends State<Dersler> {
-  var dersler = ["TYT", "AYT"];
-  var secilen = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("OTURUMLAR"),
-      ),
-      body: ListView.builder(
-        itemCount: dersler.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              if (dersler[index] == "TYT") {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DerslerTyt()));
-              } else if (dersler[index] == "AYT") {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => DerslerAyt()));
+        appBar: AppBar(
+          title: Text("OTURUMLAR"),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+            stream:
+            FirebaseFirestore.instance.collection("Lesson").snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return const Text("BAĞLANTI HATASI");
               }
-            },
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: SizedBox(
-                  height: 50,
-                  child: Row(
-                    children: [
-                      Text(dersler[index]),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              var docs = snapshot.data!.docs;
+              return ListView.builder(
+                itemCount: docs.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16.0),
+                          color: Colors.teal[500]),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OrtakDers(docs[index]["oturum"])));
+                        },
+                        child: ListTile(
+                          title: Text(docs[index]["oturum"]),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }));
   }
 }

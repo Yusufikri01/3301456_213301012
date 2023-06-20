@@ -1,11 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedefim/Ekranlar/ButtonNavigatorBar/Anasayfa.dart';
+import 'package:hedefim/Ekranlar/ForgotPassword.dart';
 import 'package:hedefim/Ekranlar/Kayit_Ekrani.dart';
+import 'package:hedefim/Service/LoginFunction.dart';
 import 'package:hedefim/Widget/Ele_Button_Proporties.dart';
 import 'package:hedefim/Widget/TextFieldFor.dart';
 
 
 class Giris_Ekrani extends StatelessWidget {
+
+  final _tfkullaniciEmail = TextEditingController();
+  final _tfkullaniciSifre = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,20 +35,25 @@ class Giris_Ekrani extends StatelessWidget {
                       color: Colors.black),
                 ),
               ),
-              TextFieldFor("E-MAİL", Icons.people_alt_outlined),
-              TextFieldFor("PAROLA", Icons.key),
+              TextFieldFor(text: "E-mail",icon: Icons.person,textEditingController: _tfkullaniciEmail,see: false),
+              TextFieldFor(text: "Password",icon: Icons.key,textEditingController: _tfkullaniciSifre,see: true),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "SİFREMİ UNUTTUM",
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black54),
+                    GestureDetector(
+                      onTap:(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgotPassword()));
+                      },
+                      child: Text(
+                        "SİFREMİ UNUTTUM",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black54),
+                      ),
                     ),
                   ],
                 ),
@@ -52,11 +63,16 @@ class Giris_Ekrani extends StatelessWidget {
                   Expanded(
                     child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: EleButtonPro(Text("GİRİŞ YAP"), () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Anasayfa()));
+                        child: EleButtonPro(Text("GİRİŞ YAP"), () async {
+                          User? user = await SignIn(
+                              _tfkullaniciEmail, _tfkullaniciSifre, context);
+                          if (user != null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        Anasayfa(user)));
+                          }
                         })),
                   )
                 ],

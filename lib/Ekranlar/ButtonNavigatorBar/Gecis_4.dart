@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:community_material_icon/community_material_icon.dart';
+import 'package:hedefim/Ekranlar/ForgotPassword.dart';
+import 'package:hedefim/Ekranlar/Giris_Ekrani.dart';
 import 'package:hedefim/Widget/SettingContainer.dart';
-
-
+import 'package:tuple/tuple.dart';
 
 class Gecis_4 extends StatefulWidget {
   const Gecis_4({Key? key}) : super(key: key);
@@ -12,8 +14,39 @@ class Gecis_4 extends StatefulWidget {
 }
 
 class _Gecis_4State extends State<Gecis_4> {
-  bool light = false;
-  Color? renk;
+  String? _kullaniciAdi;
+  String? _soyisim;
+
+  @override
+  void initState() {
+    super.initState();
+    firebaseData(FirebaseAuth.instance.currentUser).then((result) {
+      setState(() {
+        if (result != null) {
+          var tuple = result as Tuple2<String, String>;
+          _kullaniciAdi = tuple.item1;
+          _soyisim = tuple.item2;
+        }
+      });
+    });
+  }
+
+  Future<Tuple2<String, String>?> firebaseData(User? user) async {
+    var collection = FirebaseFirestore.instance.collection('users');
+    var querySnapshot = await collection.get();
+    for (var queryDocumentSnapshot in querySnapshot.docs) {
+      Map<String, dynamic> data = queryDocumentSnapshot.data();
+      var email = data['email'];
+      var kullaniciadi = data['firstname'];
+      var soyisim = data['surname'];
+
+      if (email == user?.email) {
+        return Tuple2(kullaniciadi, soyisim);
+      }
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +81,7 @@ class _Gecis_4State extends State<Gecis_4> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "YUSUF İKRİ",
+                          "${_kullaniciAdi ?? ''} ${_soyisim ?? ''}",
                           style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
@@ -56,7 +89,7 @@ class _Gecis_4State extends State<Gecis_4> {
                           ),
                         ),
                         Text(
-                          "bilgisayarmüh@gmail.com",
+                          FirebaseAuth.instance.currentUser?.email ?? '',
                           style: TextStyle(
                             color: Colors.redAccent,
                             fontSize: 15,
@@ -81,59 +114,15 @@ class _Gecis_4State extends State<Gecis_4> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          height: 80,
-                          decoration: BoxDecoration(
-                            color: Colors.deepPurple,
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, right: 20),
-                                child: Icon(
-                                  CommunityMaterialIcons.white_balance_sunny,
-                                  size: 50,
-                                  color: light
-                                      ? renk = Colors.white
-                                      : renk = Colors.yellow,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, right: 20),
-                                child: Icon(
-                                  CommunityMaterialIcons.moon_waning_crescent,
-                                  size: 50,
-                                  color: light
-                                      ? renk = Colors.black54
-                                      : renk = Colors.white,
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 15, right: 20),
-                                child: Switch(
-                                  value: light,
-                                  activeColor: Colors.redAccent,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      light = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SettingContainer(Icons.lock_rounded, "ŞİFREMİ SIFIRLA"),
-                      SettingContainer(Icons.output_sharp, "ÇIKIŞ YAP"),
+                      SettingContainer(Icons.lock, "ŞİFREMİ SIFIRLA", () {
+                        ForgotPassword();
+                      }),
+                      SettingContainer(Icons.output_sharp, "ÇIKIŞ YAP", () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Giris_Ekrani()));
+                      }),
                     ],
                   ),
                 ),

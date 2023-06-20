@@ -5,7 +5,6 @@ import 'package:hedefim/Ekranlar/ButtonNavigatorBar/Gecis_4.dart';
 import 'package:hedefim/Ekranlar/DenemeAnalizi.dart';
 import 'package:hedefim/Ekranlar/Giris_Ekrani.dart';
 
-
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
     Key? key,
@@ -16,17 +15,17 @@ class MyDrawer extends StatelessWidget {
     return Drawer(
       child: Container(
         color: Color.fromARGB(255, 205, 186, 150),
-        child: ListView(
+        child: Column(
           children: [
             Container(
               decoration: BoxDecoration(
                 color: Color.fromARGB(255, 205, 186, 150),
               ),
-              height: 200,
+              height: 217,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(19.0),
                     child: CircleAvatar(
                       radius: 50.0,
                       backgroundImage: AssetImage("assets/resim.jpg"),
@@ -42,7 +41,7 @@ class MyDrawer extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: Text(
-                      "YUSUF İKRİ",
+                      "YUSUF İKRİ", // burayı da düzeltmek gerek
                       style: TextStyle(fontSize: 22, color: Colors.black),
                     ),
                   ),
@@ -56,28 +55,39 @@ class MyDrawer extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
-              child: Wrap(
-                runSpacing: 16,
+              child: ListView(
+                padding: EdgeInsets.symmetric(vertical: 16),
+                //runSpacing: 16,
                 children: [
                   ListTile(
-                    leading: Icon(Icons.watch_later_sharp),
-                    title: Text("DENEME ZAMANI"),
+                    leading: Icon(Icons.watch_later_sharp, color: Colors.black),
+                    title: Text(
+                      "DENEME ZAMANI",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Gecis_2()));
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.list_alt),
-                    title: Text("YAPILACAKLAR"),
+                    leading: Icon(Icons.list_alt, color: Colors.black),
+                    title: Text(
+                      "YAPILACAKLAR",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Gecis_3()));
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.analytics_outlined),
-                    title: Text("DENEME ANALİZİM"),
+                    leading:
+                        Icon(Icons.analytics_outlined, color: Colors.black),
+                    title: Text(
+                      "DENEME ANALİZİM",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -86,16 +96,22 @@ class MyDrawer extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text("HESABIM"),
+                    leading: Icon(Icons.person, color: Colors.black),
+                    title: Text(
+                      "HESABIM",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Gecis_4()));
                     },
                   ),
                   ListTile(
-                    leading: Icon(Icons.exit_to_app),
-                    title: Text("ÇIKIŞ YAP"),
+                    leading: Icon(Icons.exit_to_app, color: Colors.black),
+                    title: Text(
+                      "ÇIKIŞ YAP",
+                      style: TextStyle(color: Colors.black),
+                    ),
                     onTap: () {
                       Navigator.pushReplacement(
                           context,

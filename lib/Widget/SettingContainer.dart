@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hedefim/Service/LoginFunction.dart';
 
 class SettingContainer extends StatelessWidget {
   final IconData icon;
   final String textler;
+  final VoidCallback? onPrressed;
 
   const SettingContainer(
     this.icon,
-    this.textler, {
+    this.textler,
+      this.onPrressed,{
     Key? key,
   }) : super(key: key);
 
@@ -15,7 +18,7 @@ class SettingContainer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
-        onTap: (){},
+        onTap: () {},
         child: Container(
           height: 65,
           decoration: BoxDecoration(
@@ -42,7 +45,9 @@ class SettingContainer extends StatelessWidget {
                     ),
                   ],
                 ),
-                Icon(Icons.navigate_next, color: Colors.white),
+                GestureDetector(
+                    onTap: onPrressed,
+                    child: Icon(Icons.navigate_next, color: Colors.white)),
               ],
             ),
           ),

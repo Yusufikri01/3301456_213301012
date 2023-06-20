@@ -12,7 +12,7 @@ class SinavSureContainer extends StatelessWidget {
       width: 50,
       height: 50,
       alignment: Alignment.center,
-      child: Text(text),
+      child: Text(text,style: TextStyle(color: Colors.black),),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
         color: Color.fromARGB(255, 242, 242, 242),

@@ -1,27 +1,53 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hedefim/Ekranlar/Giris_Ekrani.dart';
+import 'package:hedefim/Service/Provider.dart';
 import 'package:hedefim/Widget/Ele_Button_Proporties.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(BenimUygulamam());
 }
 
 class BenimUygulamam extends StatelessWidget {
-  const BenimUygulamam({Key? key}) : super(key: key);
+  BenimUygulamam({Key? key}) : super(key: key);
+  final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(
-          appBarTheme: AppBarTheme(
-            color: Color.fromARGB(255, 205, 186, 150),
-          ),
-          scaffoldBackgroundColor: Color.fromARGB(255, 192, 204, 192),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: BenimUygulamam_2());
+    return FutureBuilder(
+      future: prefs,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        }
+
+        return MultiProvider(
+          providers: [
+            ChangeNotifierProvider(
+              create: (context) => ThemeProvider(
+                darkThemeOn: snapshot.data!.getBool("darkTheme") ?? false,
+              ),
+            ),
+          ],
+          child: Builder(builder: (BuildContext context) {
+            var themechange = Provider.of<ThemeProvider>(context);
+            return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: themechange.getTheme(),
+                home: BenimUygulamam_2());
+          }),
+        );
+      },
+    );
   }
 }
 
@@ -50,6 +76,11 @@ class BenimUygulamam_2 extends StatelessWidget {
                 )),
               ),
             ),
+            SizedBox(
+                width: 250,
+                height: 230,
+                child: Lottie.network(
+                    "https://assets6.lottiefiles.com/private_files/lf30_TBKozE.json")),
             EleButtonPro(
               Text("MACERAYA BAŞLA"),
               () => Navigator.pushReplacement(context,

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hedefim/Ekranlar/Giris_Ekrani.dart';
+import 'package:hedefim/Service/LoginFunction.dart';
 import 'package:hedefim/Widget/Ele_Button_Proporties.dart';
 import 'package:hedefim/Widget/TextFormFieldPro.dart';
-
 
 class KayitEkrani extends StatefulWidget {
   const KayitEkrani({Key? key}) : super(key: key);
@@ -61,7 +62,19 @@ class _KayitEkraniState extends State<KayitEkrani> {
                               child: EleButtonPro(
                                 Text("KAYDET"),
                                 () {
+                                  SignUp(
+                                      _tfkullaniciAd,
+                                      _tfkullaniciSoyad,
+                                      _tfkullaniciEmail,
+                                      _tfkullaniciSifre,
+                                      context);
+
                                   if (formKey.currentState!.validate()) {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                Giris_Ekrani()));
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text('KAYIT BAŞARILI.'),

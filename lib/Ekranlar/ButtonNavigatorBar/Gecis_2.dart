@@ -1,7 +1,7 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:hedefim/Widget/S%C4%B1navSureContainer.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:hedefim/Ekranlar/Timer.dart';
+import 'package:hedefim/Widget/NumberPro.dart';
+import 'package:lottie/lottie.dart';
 
 
 class Gecis_2 extends StatefulWidget {
@@ -12,109 +12,124 @@ class Gecis_2 extends StatefulWidget {
 }
 
 class _Gecis_2State extends State<Gecis_2> {
-  String? secilenText;
-  Timer? timer;
-  double _percent = 1.0;
-  int _secondsRemaining = 0; //int _secondsRemaining = 9900;
-  bool _started = false;
-
-  void Start() {
-    timer?.cancel();
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
-      setState(() {
-        if (_secondsRemaining == 0) {
-          timer?.cancel();
-        } else {
-          _secondsRemaining--;
-          _percent = _secondsRemaining / (secilenText == "TYT" ? 9900 : 10800);
-        }
-      });
-    });
-    _started = true;
-  }
-
-  void Pause() {
-    timer?.cancel();
-    _started = false;
-  }
-
-  String _formatTime(int seconds) {
-    int hours = seconds ~/ 3600;
-    int minutes = (seconds % 3600) ~/ 60;
-    int remainingSeconds = seconds % 60;
-    return '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${remainingSeconds.toString().padLeft(2, '0')}';
-  }
-
-  //(_stared) ? stop() : start();
+  int toplam = 0;
+  int selectedHoursIndex = 0;
+  int selectedMinutesIndex = 0;
+  int selectedSecondsIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("DENEME ZAMANI"),
+        title: Text("ZAMANLAYICI"),
       ),
       body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            SizedBox(
+              height: 130,
+              width: 130,
+              child: Lottie.network(
+                "https://assets9.lottiefiles.com/packages/lf20_jdssfb7n.json",
+              ),
+            ),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          Pause();
-                          secilenText = "TYT";
-                          _secondsRemaining = 9900;
-                        });
+                //HOURS
+                Container(
+                  height: 175,
+                  width: 80,
+                  child: ListWheelScrollView.useDelegate(
+                    itemExtent: 50,
+                    perspective: 0.01,
+                    diameterRatio: 1.2,
+                    physics: FixedExtentScrollPhysics(),
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      childCount: 24,
+                      builder: (context, index) {
+                        return NumberPro(index);
                       },
-                      child: SinavSureContainer("TYT"),
                     ),
+                    onSelectedItemChanged: (index) {
+                      setState(() {
+                        selectedHoursIndex = index;
+                        toplam = (selectedHoursIndex * 3600) +
+                            (selectedMinutesIndex * 60) +
+                            selectedSecondsIndex;
+                      });
+                    },
                   ),
                 ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          Pause();
-                          secilenText = "AYT";
-                          _secondsRemaining = 10800;
-                        });
+                //MUNİTE
+                Container(
+                  height: 175,
+                  width: 80,
+                  child: ListWheelScrollView.useDelegate(
+                    itemExtent: 50,
+                    perspective: 0.01,
+                    diameterRatio: 1.2,
+                    physics: FixedExtentScrollPhysics(),
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      childCount: 60,
+                      builder: (context, index) {
+                        return NumberPro(index);
                       },
-                      child: SinavSureContainer("AYT"),
                     ),
+                    onSelectedItemChanged: (index) {
+                      setState(() {
+                        selectedMinutesIndex = index;
+                        toplam = (selectedHoursIndex * 3600) +
+                            (selectedMinutesIndex * 60) +
+                            selectedSecondsIndex;
+                      });
+                    },
+                  ),
+                ),
+                //SECOND
+                Container(
+                  height: 160,
+                  width: 80,
+                  child: ListWheelScrollView.useDelegate(
+                    itemExtent: 50,
+                    perspective: 0.01,
+                    diameterRatio: 1.2,
+                    physics: FixedExtentScrollPhysics(),
+                    childDelegate: ListWheelChildBuilderDelegate(
+                      childCount: 60,
+                      builder: (context, index) {
+                        return NumberPro(index);
+                      },
+                    ),
+                    onSelectedItemChanged: (index) {
+                      setState(() {
+                        selectedSecondsIndex = index;
+                        toplam = (selectedHoursIndex * 3600) +
+                            (selectedMinutesIndex * 60) +
+                            selectedSecondsIndex;
+                      });
+                    },
                   ),
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () {
-                (_started) ? Pause() : Start();
+            FloatingActionButton(
+              backgroundColor: Colors.amberAccent,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(toplam),
+                  ),
+                );
               },
-              child: Container(
-                child: CircularPercentIndicator(
-                  radius: 150.0,
-                  lineWidth: 10.0,
-                  animation: false,
-                  percent: _percent,
-                  center: Text(
-                    _formatTime(_secondsRemaining),
-                    style: TextStyle(color: Colors.black, fontSize: 53),
-                  ),
-                  footer: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("BAŞLAMAK İÇİN TIKLA"),
-                  ),
-                  circularStrokeCap: CircularStrokeCap.round,
-                  progressColor: Color.fromARGB(255, 205, 186, 150),
-                ),
+              child: Icon(
+                Icons.play_arrow,
+                size: 25,
+                color: Colors.white,
               ),
-            ),
+            )
           ],
         ),
       ),

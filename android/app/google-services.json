@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515703599869",
+    "project_id": "hedefim-f0bc7",
+    "storage_bucket": "hedefim-f0bc7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515703599869:android:3a0b90e56c73c3ec7a8494",
+        "android_client_info": {
+          "package_name": "com.example.hedefim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5YM8lGBdr-B7DljOq5TG5OhZTxmip0bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
