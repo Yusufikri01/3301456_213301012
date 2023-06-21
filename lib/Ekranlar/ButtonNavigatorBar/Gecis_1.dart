@@ -219,8 +219,8 @@ class _Gecis_1State extends State<Gecis_1> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          "<<<<<< HAYALLERİN İÇİN ÇABALA >>>>>>",
-                          style: TextStyle(fontSize: 18, color: Colors.teal),
+                          "HAYALLERİN İÇİN ÇABALA",
+                          style: TextStyle(fontSize: 18, color: Colors.teal,fontWeight: FontWeight.bold),
                         ),
                       ),
                       Padding(

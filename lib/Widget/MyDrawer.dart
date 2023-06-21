@@ -4,6 +4,7 @@ import 'package:hedefim/Ekranlar/ButtonNavigatorBar/Gecis_3.dart';
 import 'package:hedefim/Ekranlar/ButtonNavigatorBar/Gecis_4.dart';
 import 'package:hedefim/Ekranlar/DenemeAnalizi.dart';
 import 'package:hedefim/Ekranlar/Giris_Ekrani.dart';
+import 'package:hedefim/Ekranlar/NotlarSayfas%C4%B1/NotAna.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({
@@ -32,16 +33,9 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(4.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Text(
                       "HOSGELDİNİZ",
-                      style: TextStyle(fontSize: 22, color: Colors.black),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Text(
-                      "YUSUF İKRİ", // burayı da düzeltmek gerek
                       style: TextStyle(fontSize: 22, color: Colors.black),
                     ),
                   ),
@@ -74,6 +68,17 @@ class MyDrawer extends StatelessWidget {
                     leading: Icon(Icons.list_alt, color: Colors.black),
                     title: Text(
                       "YAPILACAKLAR",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => NotAna()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.calendar_month, color: Colors.black),
+                    title: Text(
+                      "TAKVİM",
                       style: TextStyle(color: Colors.black),
                     ),
                     onTap: () {
